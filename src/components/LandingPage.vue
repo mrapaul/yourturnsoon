@@ -1,12 +1,15 @@
 <template>
   <div class="landing-page">
     <header>
-      <img src="@/assets/logo.png" alt="YourTurnSoon Logo">
+      <img src="@/assets/logo.png" alt="YourTurnSoon Logo" />
       <h1>YourTurnSoon</h1>
       <p>Queue management made simple and free!</p>
     </header>
     <main>
-      <p>Manage your business queues effortlessly. Scan, join, and get notified. All for free!</p>
+      <p>
+        Manage your business queues effortlessly. Scan, join, and get notified.
+        All for free!
+      </p>
       <div class="features">
         <div class="feature">
           <i class="fas fa-plus-circle"></i>
@@ -21,7 +24,7 @@
           <p>Notifications</p>
         </div>
       </div>
-      <button>Create Your Queue Now!</button>
+      <button @click="goToCreate">Create Your Queue Now!</button>
     </main>
     <footer>
       <p>&copy; 2023 YourTurnSoon</p>
@@ -31,8 +34,13 @@
 
 <script>
 export default {
-  name: 'LandingPage'
-}
+  name: "LandingPage",
+  methods: {
+    goToCreate() {
+      this.$router.push({ name: 'create' });  // Use the route name to navigate
+    }
+  }
+};
 </script>
 
 <style scoped>
