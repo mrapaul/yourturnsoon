@@ -1,5 +1,3 @@
-// src/router.js
-
 import { createRouter, createWebHistory } from 'vue-router';
 import LandingPage from './components/LandingPage.vue';
 import CreateQueue from './views/CreateQueue.vue';
