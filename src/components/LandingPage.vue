@@ -21,7 +21,7 @@
           <p>Notifications</p>
         </div>
       </div>
-      <button @click="goToCreate">Create Your Queue Now!</button>
+      <router-link to="/create" class="create-button">Create Your Queue Now!</router-link>
     </main>
     <footer>
       <p>&copy; 2023 YourTurnSoon</p>
