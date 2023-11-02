@@ -1,29 +1,19 @@
-import Vue from "vue";
-import Router from "vue-router";
-import LandingPage from "./components/LandingPage.vue";
-import CreateQueue from "./views/CreateQueue.vue";
-import JoinQueue from "./views/JoinQueue.vue";
+// src/router.js
 
-Vue.use(Router);
+import { createRouter, createWebHistory } from 'vue-router';
+import LandingPage from './components/LandingPage.vue';
+import CreateQueue from './views/CreateQueue.vue';
+import JoinQueue from './views/JoinQueue.vue';
 
-const router = new Router({
-  routes: [
-    {
-      path: "/",
-      name: "landing",
-      component: LandingPage,
-    },
-    {
-      path: "/create",
-      name: "create",
-      component: CreateQueue,
-    },
-    {
-      path: "/join",
-      name: "join",
-      component: JoinQueue,
-    },
-  ],
+const routes = [
+  { path: '/', component: LandingPage },
+  { path: '/create', component: CreateQueue, name: 'create' },
+  { path: '/join', component: JoinQueue }
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
 });
 
 export default router;
