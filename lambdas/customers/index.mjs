@@ -40,7 +40,7 @@ export const handler = async (event) => {
             const updateItemCommand = new UpdateItemCommand({
                 TableName: CUSTOMERS_TABLE,
                 Key: { customerId: { S: updatedCustomer.id } },
-                UpdateExpression: "set customerName = :name, email = :email, phoneNumber = :phoneNumber, pushToken == :pushToken",
+                UpdateExpression: "set customerName = :name, email = :email, phoneNumber = :phoneNumber, pushToken = :pushToken",
                 ExpressionAttributeValues: {
                     ":name": { S: updatedCustomer.name },
                     ":email": { S: updatedCustomer.email },
@@ -58,7 +58,7 @@ export const handler = async (event) => {
             const { customerId } = JSON.parse(body);
             const deleteItemCommand = new DeleteItemCommand({
                 TableName: CUSTOMERS_TABLE,
-                Key: { customerId: { S: id } }
+                Key: { customerId: { S: customerId } }
             });
             await client.send(deleteItemCommand);
             return {
