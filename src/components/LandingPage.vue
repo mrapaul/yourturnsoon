@@ -1,13 +1,16 @@
 <template>
   <div>
-    <h1>Welcome to YourTurnSoon</h1>
-    <router-link to="/create">Create Queue</router-link>
-    <router-link to="/join">Join Queue</router-link>
+    <!-- Other landing page content -->
+    <BusinessAuth />
   </div>
 </template>
 
 <script>
+import BusinessAuth from './BusinessAuth.vue';
+
 export default {
-  name: 'LandingPage'
-}
+  components: {
+    BusinessAuth
+  }
+};
 </script>

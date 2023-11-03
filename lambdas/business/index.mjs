@@ -17,10 +17,43 @@ const generatePassword = (length = 8) => {
 };
 
 export const handler = async (event) => {
-  const { httpMethod, body } = event;
+  const { httpMethod, body, queryStringParameters } = event;
 
   switch (httpMethod) {
     case "GET":
+      // If an email is provided in the query parameters, check if it exists
+      if (queryStringParameters && queryStringParameters.email) {
+        const emailToCheck = queryStringParameters.email;
+        const scanCommand = new ScanCommand({
+          TableName: BUSINESS_TABLE,
+          FilterExpression: "email = :emailVal",
+          ExpressionAttributeValues: {
+            ":emailVal": { S: emailToCheck },
+          },
+        });
+        try {
+          const result = await client.send(scanCommand);
+          if (result.Items && result.Items.length > 0) {
+            return {
+              statusCode: 200,
+              body: JSON.stringify({ exists: true }),
+            };
+          } else {
+            return {
+              statusCode: 200,
+              body: JSON.stringify({ exists: false }),
+            };
+          }
+        } catch (error) {
+          console.error("Error checking email from DynamoDB:", error);
+          return {
+            statusCode: 500,
+            body: JSON.stringify({
+              message: "Error checking email from DynamoDB",
+            }),
+          };
+        }
+      }
       const scanCommand = new ScanCommand({ TableName: BUSINESS_TABLE });
       try {
         const result = await client.send(scanCommand);
