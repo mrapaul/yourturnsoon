@@ -9,21 +9,17 @@
           class="formulate-form"
           @submit.prevent="verifyEmail"
         >
-          <div class="form-field">
-            <font-awesome-icon icon="envelope" />
-            <FormKit
-              type="email"
-              name="email"
-              validation="required|email"
-              placeholder="Email Address"
-              v-model="email"
-            />
-          </div>
-          <div class="form-field">
-            <button type="submit" class="submit-button">
-              <font-awesome-icon icon="arrow-right" /> Next
-            </button>
-          </div>
+          <FormKit
+            type="email"
+            name="email"
+            validation="required|email"
+            placeholder="Email Address"
+            v-model="email"
+            prefix-icon="email"
+          />
+          <button type="submit" class="submit-button">
+            Next
+          </button>
         </FormKit>
 
         <!-- Registration Form -->
@@ -33,40 +29,32 @@
           class="formulate-form"
           @submit.prevent="register"
         >
-          <div class="form-field">
-            <font-awesome-icon icon="building" />
-            <FormKit
-              type="text"
-              name="businessName"
-              validation="required"
-              placeholder="Business Name"
-              v-model="businessName"
-            />
-          </div>
-          <div class="form-field">
-            <font-awesome-icon icon="phone" />
-            <FormKit
-              type="tel"
-              name="phoneNumber"
-              placeholder="Phone Number"
-              v-model="phoneNumber"
-            />
-          </div>
-          <div class="form-field">
-            <font-awesome-icon icon="globe" />
-            <FormKit
-              type="url"
-              name="websiteUrl"
-              validation="required|url"
-              placeholder="Website URL"
-              v-model="websiteUrl"
-            />
-          </div>
-          <div class="form-field">
-            <button type="submit" class="submit-button">
-              <font-awesome-icon icon="check" /> Register Business
-            </button>
-          </div>
+          <FormKit
+            type="text"
+            name="businessName"
+            validation="required"
+            placeholder="Business Name"
+            v-model="businessName"
+            prefix-icon="building"
+          />
+          <FormKit
+            type="tel"
+            name="phoneNumber"
+            placeholder="Phone Number"
+            v-model="phoneNumber"
+            prefix-icon="phone"
+          />
+          <FormKit
+            type="url"
+            name="websiteUrl"
+            validation="required|url"
+            placeholder="Website URL"
+            v-model="websiteUrl"
+            prefix-icon="globe"
+          />
+          <button type="submit" class="submit-button">
+            Register Business
+          </button>
         </FormKit>
 
         <!-- Sign-in Form -->
@@ -76,26 +64,24 @@
           class="formulate-form"
           @submit.prevent="signIn"
         >
-          <div class="form-field">
-            <font-awesome-icon icon="key" />
-            <FormKit
-              type="password"
-              name="password"
-              validation="required"
-              placeholder="Password"
-              v-model="password"
-            />
-          </div>
-          <div class="form-field">
-            <button type="submit" class="submit-button">
-              <font-awesome-icon icon="sign-in-alt" /> Sign In
-            </button>
-          </div>
+          <FormKit
+            type="password"
+            name="password"
+            validation="required"
+            placeholder="Password"
+            v-model="password"
+            prefix-icon="key"
+          />
+          <button type="submit" class="submit-button">
+            Sign In
+          </button>
         </FormKit>
       </div>
     </Transition>
   </div>
 </template>
+
+
 
 <script>
 import { defineComponent } from 'vue';
@@ -164,7 +150,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;
@@ -231,17 +217,4 @@ export default defineComponent({
   background-color: transparent;
 }
 
-/* Summer pastel color scheme */
-:root {
-  --pastel-blue: #a1c4fd;
-  --pastel-green: #b7eaff;
-  --pastel-purple: #c3bef0;
-  --pastel-pink: #fad0c4;
-  --pastel-yellow: #ffecd2;
-}
-
-/* Use the pastel colors for backgrounds, borders, etc. */
-.form-container {
-  background-color: var(--pastel-blue); /* Example background color */
-}
 </style>
