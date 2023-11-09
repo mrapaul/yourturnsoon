@@ -3,18 +3,94 @@
     <Transition name="fade">
       <div key="form-content" v-if="formState">
         <!-- Initial Email Verification Form -->
-        <FormKit v-if="formState === 'initial'" key="initial-form" class="formulate-form" @submit.prevent="verifyEmail"
-          schema="initialFormSchema">
+        <FormKit
+          v-if="formState === 'initial'"
+          key="initial-form"
+          class="formulate-form"
+          @submit.prevent="verifyEmail"
+        >
+          <div class="form-field">
+            <font-awesome-icon icon="envelope" />
+            <FormKit
+              type="email"
+              name="email"
+              validation="required|email"
+              placeholder="Email Address"
+              v-model="email"
+            />
+          </div>
+          <div class="form-field">
+            <button type="submit" class="submit-button">
+              <font-awesome-icon icon="arrow-right" /> Next
+            </button>
+          </div>
         </FormKit>
 
         <!-- Registration Form -->
-        <FormKit v-if="formState === 'register'" key="register-form" class="formulate-form" @submit.prevent="register"
-          schema="registerFormSchema">
+        <FormKit
+          v-if="formState === 'register'"
+          key="register-form"
+          class="formulate-form"
+          @submit.prevent="register"
+        >
+          <div class="form-field">
+            <font-awesome-icon icon="building" />
+            <FormKit
+              type="text"
+              name="businessName"
+              validation="required"
+              placeholder="Business Name"
+              v-model="businessName"
+            />
+          </div>
+          <div class="form-field">
+            <font-awesome-icon icon="phone" />
+            <FormKit
+              type="tel"
+              name="phoneNumber"
+              placeholder="Phone Number"
+              v-model="phoneNumber"
+            />
+          </div>
+          <div class="form-field">
+            <font-awesome-icon icon="globe" />
+            <FormKit
+              type="url"
+              name="websiteUrl"
+              validation="required|url"
+              placeholder="Website URL"
+              v-model="websiteUrl"
+            />
+          </div>
+          <div class="form-field">
+            <button type="submit" class="submit-button">
+              <font-awesome-icon icon="check" /> Register Business
+            </button>
+          </div>
         </FormKit>
 
         <!-- Sign-in Form -->
-        <FormKit v-if="formState === 'signin'" key="signin-form" class="formulate-form" @submit.prevent="signIn"
-          schema="signInFormSchema">
+        <FormKit
+          v-if="formState === 'signin'"
+          key="signin-form"
+          class="formulate-form"
+          @submit.prevent="signIn"
+        >
+          <div class="form-field">
+            <font-awesome-icon icon="key" />
+            <FormKit
+              type="password"
+              name="password"
+              validation="required"
+              placeholder="Password"
+              v-model="password"
+            />
+          </div>
+          <div class="form-field">
+            <button type="submit" class="submit-button">
+              <font-awesome-icon icon="sign-in-alt" /> Sign In
+            </button>
+          </div>
         </FormKit>
       </div>
     </Transition>
@@ -22,18 +98,14 @@
 </template>
 
 <script>
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEnvelope, faBuilding, faCheck, faArrowRight, faKey, faSignInAlt, faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { checkEmailExists, registerBusiness, signInBusiness } from '../api'; // Adjust the path accordingly
 import { defineComponent } from 'vue';
 import { FormKit } from '@formkit/vue';
+import { checkEmailExists, registerBusiness, signInBusiness } from '../api'; // Adjust the path accordingly
 
 // Add icons to the library
-library.add(faEnvelope, faBuilding, faCheck, faArrowRight, faKey, faSignInAlt, faPhone, faGlobe);
-
 export default defineComponent({
   components: {
-    FormKit
+    FormKit,
   },
   data() {
     return {
@@ -45,82 +117,6 @@ export default defineComponent({
       websiteUrl: '',
       formState: 'initial', // 'initial', 'register', 'signin'
     };
-  },
-  computed: {
-    initialFormSchema() {
-      return [
-        {
-          $el: 'input',
-          type: 'email',
-          name: 'email',
-          validation: 'required|email',
-          placeholder: 'Email Address',
-          'v-model': 'email',
-          before: '<font-awesome-icon icon="envelope" />'
-        },
-        {
-          $el: 'button',
-          type: 'submit',
-          class: 'submit-button',
-          children: '<font-awesome-icon icon="arrow-right" /> Next'
-        }
-      ];
-    },
-    registerFormSchema() {
-      return [
-        {
-          $el: 'input',
-          type: 'text',
-          name: 'businessName',
-          validation: 'required',
-          placeholder: 'Business Name',
-          'v-model': 'businessName',
-          before: '<font-awesome-icon icon="building" />'
-        },
-        {
-          $el: 'input',
-          type: 'text',
-          name: 'phoneNumber',
-          placeholder: 'Phone Number',
-          'v-model': 'phoneNumber',
-          before: '<font-awesome-icon icon="phone" />'
-        },
-        {
-          $el: 'input',
-          type: 'url',
-          name: 'websiteUrl',
-          validation: 'required|url',
-          placeholder: 'Website URL',
-          'v-model': 'websiteUrl',
-          before: '<font-awesome-icon icon="globe" />'
-        },
-        {
-          $el: 'button',
-          type: 'submit',
-          class: 'submit-button',
-          children: '<font-awesome-icon icon="check" /> Register Business'
-        }
-      ];
-    },
-    signInFormSchema() {
-      return [
-        {
-          $el: 'input',
-          type: 'password',
-          name: 'password',
-          validation: 'required',
-          placeholder: 'Password',
-          'v-model': 'password',
-          before: '<font-awesome-icon icon="key" />'
-        },
-        {
-          $el: 'button',
-          type: 'submit',
-          class: 'submit-button',
-          children: '<font-awesome-icon icon="sign-in-alt" /> Sign In'
-        }
-      ];
-    }
   },
   methods: {
     async verifyEmail() {
@@ -228,5 +224,24 @@ export default defineComponent({
   /* Darker shade on hover */
 }
 
-/* Add other styles as needed */
+.form-field .formulate-input input {
+  border: none;
+  border-bottom: 2px solid #b6b6b6; /* Bold lower border */
+  padding: 0.5rem 0;
+  background-color: transparent;
+}
+
+/* Summer pastel color scheme */
+:root {
+  --pastel-blue: #a1c4fd;
+  --pastel-green: #b7eaff;
+  --pastel-purple: #c3bef0;
+  --pastel-pink: #fad0c4;
+  --pastel-yellow: #ffecd2;
+}
+
+/* Use the pastel colors for backgrounds, borders, etc. */
+.form-container {
+  background-color: var(--pastel-blue); /* Example background color */
+}
 </style>
