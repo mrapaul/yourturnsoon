@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import pkg from "@aws-sdk/client-dynamodb";
 import crypto from "crypto";
 
@@ -21,6 +22,54 @@ export const handler = async (event) => {
 
   switch (httpMethod) {
     case "GET":
+      if (queryStringParameters && queryStringParameters.email && queryStringParameters.password) {
+        const emailToCheck = queryStringParameters.email;
+        const passwordToCheck = queryStringParameters.password;
+        const scanCommand = new ScanCommand({
+          TableName: BUSINESS_TABLE,
+          FilterExpression: "email = :emailVal and password = :passwordVal",
+          ExpressionAttributeValues: {
+            ":emailVal": { S: emailToCheck },
+            ":passwordVal": { S: passwordToCheck },
+          },
+        });
+        try {
+          const result = await client.send(scanCommand);
+          if (result.Items && result.Items.length > 0) {
+            // Business found, sign-in successful
+            return {
+              headers: {
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Credentials": true, 
+              },
+              statusCode: 200,
+              body: JSON.stringify({ signInSuccess: true }),
+            };
+          } else {
+            // Business not found, sign-in failed
+            return {
+              headers: {
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Credentials": true, 
+              },
+              statusCode: 401,
+              body: JSON.stringify({ signInSuccess: false }),
+            };
+          }
+        } catch (error) {
+          console.error("Error during sign-in:", error);
+          return {
+            headers: {
+              "Access-Control-Allow-Origin": "*", 
+              "Access-Control-Allow-Credentials": true, 
+            },
+            statusCode: 500,
+            body: JSON.stringify({
+              message: "Error during sign-in",
+            }),
+          };
+        }
+      }
       // If an email is provided in the query parameters, check if it exists
       if (queryStringParameters && queryStringParameters.email) {
         const emailToCheck = queryStringParameters.email;
@@ -35,11 +84,19 @@ export const handler = async (event) => {
           const result = await client.send(scanCommand);
           if (result.Items && result.Items.length > 0) {
             return {
+              headers: {
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Credentials": true, 
+              },
               statusCode: 200,
               body: JSON.stringify({ exists: true }),
             };
           } else {
             return {
+              headers: {
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Credentials": true, 
+              },
               statusCode: 200,
               body: JSON.stringify({ exists: false }),
             };
@@ -47,6 +104,10 @@ export const handler = async (event) => {
         } catch (error) {
           console.error("Error checking email from DynamoDB:", error);
           return {
+            headers: {
+              "Access-Control-Allow-Origin": "*", 
+              "Access-Control-Allow-Credentials": true, 
+            },
             statusCode: 500,
             body: JSON.stringify({
               message: "Error checking email from DynamoDB",
@@ -65,12 +126,20 @@ export const handler = async (event) => {
           websiteUrl: item.websiteUrl.S,
         }));
         return {
+          headers: {
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Credentials": true, 
+          },
           statusCode: 200,
           body: JSON.stringify(businesses),
         };
       } catch (error) {
         console.error("Error fetching businesses from DynamoDB:", error);
         return {
+          headers: {
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Credentials": true, 
+          },
           statusCode: 500,
           body: JSON.stringify({
             message: "Error fetching businesses from DynamoDB",
@@ -89,6 +158,10 @@ export const handler = async (event) => {
         !business.phoneNumber
       ) {
         return {
+          headers: {
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Credentials": true, 
+          },
           statusCode: 400,
           body: JSON.stringify({
             message:
@@ -115,6 +188,10 @@ export const handler = async (event) => {
       try {
         await client.send(putItemCommand);
         return {
+          headers: {
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Credentials": true, 
+          },
           statusCode: 200,
           body: JSON.stringify({
             message: "Business added successfully",
@@ -124,6 +201,10 @@ export const handler = async (event) => {
       } catch (error) {
         console.error("Error adding business to DynamoDB:", error);
         return {
+          headers: {
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Credentials": true, 
+          },
           statusCode: 500,
           body: JSON.stringify({
             message: "Error adding business to DynamoDB",
@@ -145,6 +226,10 @@ export const handler = async (event) => {
           !updatedBusiness.websiteUrl
         ) {
           return {
+            headers: {
+              "Access-Control-Allow-Origin": "*", 
+              "Access-Control-Allow-Credentials": true, 
+            },
             statusCode: 400,
             body: JSON.stringify({
               message: "Invalid input. Please provide all required fields.",
@@ -170,6 +255,10 @@ export const handler = async (event) => {
         await client.send(updateItemCommand);
 
         return {
+          headers: {
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Credentials": true, 
+          },
           statusCode: 200,
           body: JSON.stringify({
             message: "BusinessPage updated successfully",
@@ -181,6 +270,10 @@ export const handler = async (event) => {
         // Handle specific errors
         if (error.name === "ValidationException") {
           return {
+            headers: {
+              "Access-Control-Allow-Origin": "*", 
+              "Access-Control-Allow-Credentials": true, 
+            },
             statusCode: 400,
             body: JSON.stringify({
               message: "Invalid input or data format.",
@@ -191,6 +284,10 @@ export const handler = async (event) => {
 
         // Generic error response
         return {
+          headers: {
+            "Access-Control-Allow-Origin": "*", 
+            "Access-Control-Allow-Credentials": true, 
+          },
           statusCode: 500,
           body: JSON.stringify({
             message: "Internal server error. Please try again later.",
@@ -206,12 +303,20 @@ export const handler = async (event) => {
       });
       await client.send(deleteItemCommand);
       return {
+        headers: {
+          "Access-Control-Allow-Origin": "*", 
+          "Access-Control-Allow-Credentials": true, 
+        },
         statusCode: 200,
         body: JSON.stringify({ message: "BusinessPage deleted successfully" }),
       };
 
     default:
       return {
+        headers: {
+          "Access-Control-Allow-Origin": "*", 
+          "Access-Control-Allow-Credentials": true, 
+        },
         statusCode: 400,
         body: JSON.stringify({ message: "Invalid HTTP method" }),
       };
