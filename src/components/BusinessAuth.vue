@@ -1,83 +1,35 @@
 <template>
   <div class="form-container">
-    <Transition name="fade">
-      <div key="form-content" v-if="formState">
-        <!-- Initial Email Verification Form -->
-        <FormKit
-          v-if="formState === 'initial'"
-          key="initial-form"
-          class="formulate-form"
-          @submit.prevent="verifyEmail"
-        >
-          <FormKit
-            type="email"
-            name="email"
-            validation="required|email"
-            placeholder="Email Address"
-            v-model="email"
-            prefix-icon="email"
-          />
-          <button type="submit" class="submit-button">
-            Next
-          </button>
-        </FormKit>
+    <div key="form-content" v-if="formState">
+      <!-- Initial Email Verification Form -->
+      <FormKit v-if="formState === 'initial'" key="initial-form" class="formulate-form" @submit.prevent="verifyEmail">
+        <FormKit type="email" name="email" validation="required|email" placeholder="myname@website.com" v-model="email" />
+        <button type="submit" class="submit-button">
+          Next
+        </button>
+      </FormKit>
 
-        <!-- Registration Form -->
-        <FormKit
-          v-if="formState === 'register'"
-          key="register-form"
-          class="formulate-form"
-          @submit.prevent="register"
-        >
-          <FormKit
-            type="text"
-            name="businessName"
-            validation="required"
-            placeholder="Business Name"
-            v-model="businessName"
-            prefix-icon="building"
-          />
-          <FormKit
-            type="tel"
-            name="phoneNumber"
-            placeholder="Phone Number"
-            v-model="phoneNumber"
-            prefix-icon="phone"
-          />
-          <FormKit
-            type="url"
-            name="websiteUrl"
-            validation="required|url"
-            placeholder="Website URL"
-            v-model="websiteUrl"
-            prefix-icon="globe"
-          />
-          <button type="submit" class="submit-button">
-            Register Business
-          </button>
-        </FormKit>
+      <!-- Registration Form -->
+      <FormKit v-if="formState === 'register'" key="register-form" class="formulate-form" @submit.prevent="register">
+        <FormKit type="text" name="businessName" validation="required" placeholder="Business Name" v-model="businessName"
+          prefix-icon="building" />
+        <FormKit type="tel" name="phoneNumber" placeholder="Phone Number" v-model="phoneNumber" prefix-icon="phone" />
+        <FormKit type="url" name="websiteUrl" validation="required|url" placeholder="Website URL" v-model="websiteUrl"
+          prefix-icon="globe" />
+        <button type="submit" class="submit-button">
+          Register Business
+        </button>
+      </FormKit>
 
-        <!-- Sign-in Form -->
-        <FormKit
-          v-if="formState === 'signin'"
-          key="signin-form"
-          class="formulate-form"
-          @submit.prevent="signIn"
-        >
-          <FormKit
-            type="password"
-            name="password"
-            validation="required"
-            placeholder="Password"
-            v-model="password"
-            prefix-icon="key"
-          />
-          <button type="submit" class="submit-button">
-            Sign In
-          </button>
-        </FormKit>
-      </div>
-    </Transition>
+      <!-- Sign-in Form -->
+      <FormKit v-if="formState === 'signin'" key="signin-form" class="formulate-form" @submit.prevent="signIn">
+        <FormKit type="password" name="password" validation="required" placeholder="Password" v-model="password"
+          prefix-icon="key" />
+        <button type="submit" class="submit-button">
+          Sign In
+        </button>
+      </FormKit>
+    </div>
   </div>
 </template>
 
@@ -91,7 +43,7 @@ import { checkEmailExists, registerBusiness, signInBusiness } from '../api'; // 
 // Add icons to the library
 export default defineComponent({
   components: {
-    FormKit,
+    FormKit
   },
   data() {
     return {
@@ -151,70 +103,4 @@ export default defineComponent({
 </script>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f4f4f9;
-  /* Pastel background */
-}
-
-.formulate-form {
-  width: 100%;
-  max-width: 400px;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background: #ffffff;
-  /* White background for the form */
-}
-
-.form-field {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.form-field .formulate-input {
-  flex-grow: 1;
-  margin-left: 0.5rem;
-}
-
-.submit-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #a0aec0;
-  /* Pastel button color */
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-  background-color: #718096;
-  /* Darker shade on hover */
-}
-
-.form-field .formulate-input input {
-  border: none;
-  border-bottom: 2px solid #b6b6b6; /* Bold lower border */
-  padding: 0.5rem 0;
-  background-color: transparent;
-}
-
 </style>
